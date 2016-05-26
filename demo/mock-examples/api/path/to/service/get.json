@@ -1,0 +1,4 @@
+{
+  "test": "example",
+  "whatItRealyGet": "mocks/api/path/to/service/get.json"
+}

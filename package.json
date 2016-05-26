@@ -4,8 +4,12 @@
   "description": "NodeJS Stub server for test and dev purposes",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec \"eslint app && node\" ./index.js",
-    "test": "eslint"
+    "start": "node index.js",
+    "clean": "rm ./client/bundle.js",
+    "client": "npm run clean && babel client/sdk.js > client/bundle.js",
+    "lint": "eslint server/* && eslint client/*.js",
+    "watch:client": "nodemon --watch client --exec \"npm run client\" --ignore client/bundle.js",
+    "watch:server": "nodemon --watch server --exec \"eslint server/*.js & node\" index.js"
   },
   "repository": {
     "type": "git",
@@ -27,9 +31,13 @@
   "dependencies": {
     "body-parser": "^1.15.1",
     "chalk": "^1.1.3",
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "express-http-proxy": "^0.6.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-polyfill": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
     "eslint": "^2.10.2",
     "nodemon": "^1.9.2"
   }

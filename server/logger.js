@@ -1,13 +1,25 @@
 'use strict';
 
-var chalk = require('chalk');
+const chalk = require('chalk');
 
 const wrap = (color, txt) => {
+  let trace = new Error().stack;
+  let context = trace.split(/at /g);
+  trace = context[3].trim().split(' ')[1];
+  trace = trace.replace(process.cwd() + '/', '');
   txt = typeof txt === 'object' ? JSON.stringify(txt, null, 2) : txt;
-  return global.console.log(chalk[color].bold(txt));
+  return global.console.log(chalk.gray(trace), chalk[color].bold(txt));
 };
 
+let verbose = false;
+
 module.exports = {
+  verbose: bol => {
+    verbose = bol;
+  },
+  default: txt => {
+    wrap('white', txt);
+  },
   info: txt => {
     wrap('blue', txt);
   },
@@ -21,6 +33,11 @@ module.exports = {
     wrap('yellow', txt);
   },
   debug: txt => {
-    wrap('gray', txt);
+    if (verbose) {
+      wrap('gray', txt);
+    }
+  },
+  mock: txt => {
+    wrap('magenta', txt);
   }
 };
