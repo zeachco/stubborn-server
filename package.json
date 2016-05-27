@@ -1,6 +1,6 @@
 {
   "name": "stubborn",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "NodeJS Stub server for test and dev purposes",
   "main": "index.js",
   "scripts": {
