@@ -1,6 +1,6 @@
 module.exports = {
   verbose: false,
-  mocks: 'mock-examples',
+  pathToMocks: 'mock-examples',
   server: {
     port: 8059
   },

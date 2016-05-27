@@ -5,7 +5,7 @@ const log = require('./logger');
 log.verbose(config.verbose);
 
 [ // check mandatory configuration
-  'mocks = string',
+  'pathToMocks = string',
   'server.port = number',
   'fallback.port = number'
 ].forEach(check => {

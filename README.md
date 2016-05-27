@@ -17,7 +17,7 @@ content might look like
 ```javascript
 module.exports = {
   verbose: true,
-  mocks: 'mock-examples', // mock folder relative path
+  pathToMocks: 'mock-examples', // mock folder relative path
   server: {
     port: 8059
   },
@@ -32,7 +32,7 @@ or a `.stubbornrc.json` file
 ```json
 {
   "verbose": true,
-  "mocks": "mock-examples",
+  "pathToMocks": "mock-examples",
   "server": {
     "port": 8059
   },

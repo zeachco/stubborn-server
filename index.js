@@ -1,7 +1,7 @@
 const methods = {
   log: require('./server/logger'),
   start: () => require('./server'),
-  start: config => {
+  start: (config = {}) => {
     require('./server');
     config.mocks = Object.keys(config.mocks).map(k => {
       let req = k.split(' ');

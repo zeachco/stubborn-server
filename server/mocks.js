@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   // (memoryDb[req.session] ? && memoryDb[req.session][req.url])
 
   let mocker = null;
-  const file = path.join(process.cwd(), config.mocks, req.url, req.method.toLowerCase());
+  const file = path.join(process.cwd(), config.pathToMocks, req.url, req.method.toLowerCase());
   try {
     mocker = requireMock(file);
     try {
