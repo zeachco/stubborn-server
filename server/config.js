@@ -4,11 +4,9 @@ const log = require('./logger');
 
 log.verbose(config.verbose);
 
-// check configuration
-[
+[ // check mandatory configuration
   'mocks = string',
   'server.port = number',
-  'fallback.host = string',
   'fallback.port = number'
 ].forEach(check => {
   let s = check.split(/ ?= ?/);
