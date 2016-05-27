@@ -9,11 +9,14 @@ Stubborn.start({
   },
   mocks: {
     'POST /api/path/to/custom/service': (req, res, utils) => {
-      req.count++;
-      utils.db.count++;
-      if (req.count > 4) {
-        res.status = 404;
-        res.end(req.hostname);
+      let db = utils.db(req);
+      utils.db.reset(req);
+      db.count++;
+      if (db.count > 4) {
+        res.status = 200;
+        res.json({
+          count: db.count
+        });
       }
     },
     // will resolve to api/path/to/other/service/get-bundle.[js|json]
@@ -21,6 +24,4 @@ Stubborn.start({
   }
 });
 
-// setTimeout(() => {
-//   Stubborn.stop();
-// }, 15000);
+// Stubborn.stop();

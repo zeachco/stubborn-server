@@ -1,5 +1,5 @@
 module.exports = {
-  verbose: true,
+  verbose: false,
   mocks: 'mock-examples',
   server: {
     port: 8059
