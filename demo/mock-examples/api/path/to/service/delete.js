@@ -1,10 +1,11 @@
 module.exports = (req, res, utils) => {
-  if (!isFinite(utils.db.count)) {
-    utils.db.count = 10;
+  let db = utils.db(req);
+  if (!isFinite(db.count)) {
+    db.count = 10;
   }
-  if (utils.db.count > 0) {
-    utils.log(`count = ${utils.db.count}... OK`);
-    utils.db.count--;
+  if (db.count > 0) {
+    utils.log(`count = ${db.count}... OK`);
+    db.count--;
     res.status(204);
     res.end();
   } else {

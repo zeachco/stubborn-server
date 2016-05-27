@@ -44,6 +44,35 @@ or a `.stubbornrc.json` file
 
 create some mocks like the one given in [demo/mock-examples](demo/mock-examples)
 
+here is a "complex" example
+
+```javascript
+// file: demo/mock-examples/api/path/to/service/delete.js
+
+module.exports = (req, res, utils) => {
+  let db = utils.db(req);
+  if (!isFinite(db.count)) {
+    db.count = 10;
+  }
+  if (db.count > 0) {
+    utils.log(`count = ${db.count}... OK`);
+    db.count--;
+    res.status(204);
+    res.end();
+  } else {
+    utils.log(`Failed call ! count = ${utils.db.count}`);
+    res.status(401);
+    res.json({
+      error: 'You can\'t delete that item',
+      canadianErrorPrefix: 'Very sorry! '
+    });
+  }
+};
+```
+
+this will have the following behaviour
+![mock behaviour](https://raw.githubusercontent.com/zeachco/stubborn-server/master/demo/memory-database.gif)
+
 then start server with something like this
 
 ```javascript
