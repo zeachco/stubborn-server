@@ -1,5 +1,5 @@
 {
-  "name": "stubborn",
+  "name": "stubborn-server",
   "version": "0.0.1",
   "description": "NodeJS Stub server for test and dev purposes",
   "main": "index.js",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zeachco/stubborn.git"
+    "url": "git+https://github.com/zeachco/stubborn-server.git"
   },
   "keywords": [
     "stub",
