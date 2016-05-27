@@ -35,9 +35,6 @@
     "express-http-proxy": "^0.6.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.9.0",
-    "babel-polyfill": "^6.9.0",
-    "babel-preset-es2015": "^6.9.0",
     "eslint": "^2.10.2",
     "nodemon": "^1.9.2"
   }
