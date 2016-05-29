@@ -16,23 +16,32 @@ const MockBehaviours = {
   'null': (data, req, res) => res.end()
 };
 
-const requireMock = resolve => {
-  return memoryDb[resolve] || require(resolve);
+const requireMock = (req) => {
+  const key = req.method + ' ' + req.url;
+  const dbMock = memoryDb(req).mocks[key];
+  const file = path.join(process.cwd(), config.pathToMocks, req.url, req.method.toLowerCase());
+  let mock = null;
+  if (dbMock && dbMock.fn) {
+    mock = dbMock.fn;
+  } else if (dbMock && dbMock.alt) {
+    mock = require(file + '-' + dbMock.alt
+      .replace(/^(get|post|put|delete)\-/i, ''));
+  } else {
+    mock = require(file);
+  }
+  return mock;
 };
 
 app.use((req, res, next) => {
-  // req.session = 'test';
-  // (memoryDb[req.session] ? && memoryDb[req.session][req.url])
-
+  log.warn(memoryDb._root);
   let mocker = null;
-  const file = path.join(process.cwd(), config.pathToMocks, req.url, req.method.toLowerCase());
   try {
-    mocker = requireMock(file);
+    mocker = requireMock(req);
     try {
       MockBehaviours[typeof mocker](mocker, req, res);
       log.mock(`${req.method} ${req.url}`);
     } catch (e) {
-      log.error(e);
+      console.log(e);
     }
   } catch (e) {
     log.debug(`Fallback for ${req.method.toUpperCase()} ${req.url}`);

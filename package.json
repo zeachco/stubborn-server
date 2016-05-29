@@ -5,11 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "clean": "rm ./client/bundle.js",
-    "client": "npm run clean && babel client/sdk.js > client/bundle.js",
     "lint": "eslint server/* && eslint client/*.js",
-    "watch:client": "nodemon --watch client --exec \"npm run client\" --ignore client/bundle.js",
-    "watch:server": "nodemon --watch server --exec \"eslint server/*.js & node\" index.js"
+    "demo": "nodemon --exec \"eslint *.js & node\" demo.js"
   },
   "repository": {
     "type": "git",

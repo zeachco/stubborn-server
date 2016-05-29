@@ -1,6 +1,6 @@
 module.exports = function(req, res) {
   res.json({
-    whatItRealyGet: 'api/path/to/service/post.js',
+    whatItRealyGet: __filename,
     payload: req.body
   });
 };

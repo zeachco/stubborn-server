@@ -1,11 +1,11 @@
 module.exports = {
   verbose: false,
-  pathToMocks: 'mock-examples',
+  pathToMocks: 'demo/mock-examples',
   server: {
     port: 8059
   },
   fallback: {
     host: null,
-    port: 8080
+    port: 3000
   }
 };
