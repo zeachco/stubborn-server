@@ -32,6 +32,7 @@ const requireMock = (req) => {
   //   mock = require(file + '-' + dbMock.alt
   //     .replace(/^(get|post|put|delete)\-/i, ''));
   // } else {
+  delete require.cache[require.resolve(file)];
   mock = require(file);
   // }
   return mock;
