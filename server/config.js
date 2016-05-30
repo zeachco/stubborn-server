@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const config = require(path.join(process.cwd(), '.stubbornrc'));
+const config = require(path.join(process.cwd(), 'stubborn'));
 const log = require('./logger');
 
 log.verbose(config.verbose);
