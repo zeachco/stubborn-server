@@ -33,7 +33,6 @@ const requireMock = (req) => {
 };
 
 app.use((req, res, next) => {
-  log.warn(memoryDb._root);
   let mocker = null;
   try {
     mocker = requireMock(req);
