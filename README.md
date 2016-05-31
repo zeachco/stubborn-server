@@ -1,4 +1,4 @@
-# stubborn <img src="https://travis-ci.org/zeachco/zeachco.com.svg?branch=master" />
+# stubborn [![Build Status](https://travis-ci.org/zeachco/stubborn-server.png)](https://travis-ci.org/zeachco/stubborn-server)
 NodeJS Stub server for test and dev purposes
 
 It allow :
