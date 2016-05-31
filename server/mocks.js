@@ -2,10 +2,11 @@
 const log = require('./logger');
 const path = require('path');
 const memoryDb = require('./memory-db');
-const config = require('./config');
+const config = require('./config')();
 const app = require('./app');
 
 const utils = {
+  config: config,
   log: log.mock,
   db: memoryDb
 };
@@ -22,19 +23,11 @@ const requireMock = (req) => {
     process.cwd(),
     config.pathToMocks,
     req.url.split('?')[0],
-    req.method.toLowerCase()
+    req.method.toLowerCase(),
+    config.namespace ? '-' + config.namespace : ''
   );
-  // const key = req.method + ' ' + req.url;
-  // const dbMock = memoryDb(req).mocks[key];
-  // if (dbMock && dbMock.fn) {
-  //   mock = dbMock.fn;
-  // } else if (dbMock && dbMock.alt) {
-  //   mock = require(file + '-' + dbMock.alt
-  //     .replace(/^(get|post|put|delete)\-/i, ''));
-  // } else {
   delete require.cache[require.resolve(file)];
   mock = require(file);
-  // }
   return mock;
 };
 

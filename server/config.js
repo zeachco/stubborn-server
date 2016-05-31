@@ -1,22 +1,28 @@
 'use strict';
 
 const path = require('path');
-const config = require(path.join(process.cwd(), 'stubborn'));
 const log = require('./logger');
+let config = require(path.join(process.cwd(), 'stubborn'));
 
-log.verbose(config.verbose);
+module.exports = options => {
+  config = Object.assign(config, options || {});
 
-[ // check mandatory configuration
-  'pathToMocks = string',
-  'server.port = number',
-  'fallback.port = number'
-].forEach(check => {
-  let s = check.split(/ ?= ?/);
-  if (eval(`typeof config.${s[0]} === '${s[1]}'`)) {
-    log.debug(`${s[0]} OK!`);
-  } else {
-    log.error(`${s[0]} is supposed to be a ${s[1]}`);
-  }
-});
+  log.verbose(config.verbose);
 
-module.exports = config;
+  [ // check mandatory configuration
+    'verbose = boolean',
+    'namespace = string',
+    'servePort = number',
+    'fallbacks = object'
+  ].forEach(check => {
+    let s = check.split(/ ?= ?/);
+    if (eval(`typeof config.${s[0]} !== '${s[1]}'`)) {
+      log.error(`${s[0]} is supposed to be a ${s[1]}`);
+    }
+  });
+
+  if (options)
+    log.debug('Server configuration', config);
+
+  return config;
+};

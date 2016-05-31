@@ -4,7 +4,7 @@ const chalk = require('chalk');
 
 let verbose = false;
 
-const wrap = (color, txt) => {
+const wrap = (color, ...txts) => {
   let prefix = '';
   if (verbose) {
     let trace = new Error().stack;
@@ -13,22 +13,22 @@ const wrap = (color, txt) => {
     trace = trace.replace(process.cwd() + '/', '');
     prefix = chalk.gray(trace);
   }
-  txt = typeof txt === 'object' ? JSON.stringify(txt, null, 2) : txt;
-  global.console.log(prefix, chalk[color].bold(txt));
+  txts = txts.map(t => typeof t === 'object' ? JSON.stringify(t, null, 2) : t).map(t => chalk[color].bold(t));
+  global.console.log(prefix, ...txts);
 };
 
 module.exports = {
   verbose: bol => verbose = bol,
-  default: txt => wrap('white', txt),
-  info: txt => wrap('blue', txt),
-  success: txt => wrap('green', txt),
-  error: txt => wrap('red', txt),
-  warn: txt => wrap('yellow', txt),
-  debug: txt => {
+  default: (...txts) => wrap('white', ...txts),
+  info: (...txts) => wrap('blue', ...txts),
+  success: (...txts) => wrap('green', ...txts),
+  error: (...txts) => wrap('red', ...txts),
+  warn: (...txts) => wrap('yellow', ...txts),
+  debug: (...txts) => {
     if (verbose) {
-      wrap('gray', txt);
+      wrap('gray', ...txts);
     }
   },
-  mock: txt => wrap('magenta', txt)
+  mock: (...txts) => wrap('magenta', ...txts)
 
 };

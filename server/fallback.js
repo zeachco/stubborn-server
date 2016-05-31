@@ -1,10 +1,25 @@
 'use strict';
 
 const proxy = require('express-http-proxy');
-const config = require('./config');
+const express = require('express');
+const config = require('./config')();
 const app = require('./app');
 
-app.use((req, res, next) => {
-  let target = (config.fallback.host || req.hostname) + ':' + config.fallback.port;
-  proxy(target, {})(req, res, next);
+Object.keys(config.fallbacks).forEach(key => {
+  let target = config.fallbacks[key];
+  if (target.indexOf(':') > -1) {
+    app.use(key, (req, res, next) => {
+      proxy(target, {
+        forwardPath: function(req) {
+          return require('url').parse(req.url).path;
+        },
+        decorateRequest: function(req) {
+          req.headers['X-Server-Proxy'] = 'Stubborn-server';
+          return req;
+        }
+      })(req, res, next);
+    });
+  } else { // We assume the target is a local folder if not an url
+    app.use(key.replace(/\*$/, ''), express.static(target));
+  }
 });
