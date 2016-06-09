@@ -1,13 +1,14 @@
-# stubborn [![Build Status](https://travis-ci.org/zeachco/stubborn-server.png)](https://travis-ci.org/zeachco/stubborn-server)
+# Is your backend stubborn? [![Build Status](https://travis-ci.org/zeachco/stubborn-server.png)](https://travis-ci.org/zeachco/stubborn-server)
 NodeJS Stub server for test and dev purposes
 
 It allow :
 - mocking with static json
 - mocking with dynamic request handlers based on [Express  requests](http://expressjs.com/en/4x/api.html#req)
 - storing/accessing a memory database
-- separate database per namespace (can use a session)
+- separate database per namespace
 - reset a db at anytime with default values
-- usage of aliases to get alternate responses (allow scenarios flexibility)
+- usage of aliases to get alternate mock responses (allow scenarios flexibility)
+- integrates well with test framework
 
 ### how to use
 
