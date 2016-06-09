@@ -18,7 +18,7 @@ content might look like
 module.exports = {
   verbose: true,
   pathToMocks: 'mock-examples', // mock folder relative path
-  serverPort: 8059,
+  servePort: 8059,
   fallbacks: {
     '/assets/*': '/path/to/static/folder',
     '/*': 'localhost:3000'
@@ -31,7 +31,7 @@ or a `stubborn.json` file
 {
   "verbose": true,
   "pathToMocks": "mock-examples",
-  "serverPort": 8059,
+  "servePort": 8059,
   "fallbacks": {
     "/assets/*": "/path/to/static/folder",
     "/*": "localhost:3000"
