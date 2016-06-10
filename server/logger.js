@@ -5,7 +5,7 @@ var chalk = require('chalk');
 var verbose = false;
 
 var wrap = (color, args) => {
-  args = Array.push.apply([], args);
+  args = Array.prototype.slice.apply([], args);
   var prefix = '';
   if (verbose) {
     var trace = new Error().stack;
