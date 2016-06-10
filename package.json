@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "eslint ./**.js ./server/*",
+    "test": "eslint ./**.js ./server/* && node tests",
     "demo": "nodemon --exec \"eslint *.js & node\" demo.js"
   },
   "repository": {

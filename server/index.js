@@ -10,6 +10,6 @@ require('./dead-end');
 
 app.process = app.listen(conf.servePort, () => {
   let fallbacks = Object.keys(conf.fallbacks);
-  log.default('Mocks set for', ...fallbacks);
+  log.default('Mocks set for', fallbacks.join(', '));
   log.success(`Server is running at http://127.0.0.1:${conf.servePort}`);
 });
