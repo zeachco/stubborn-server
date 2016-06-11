@@ -2,14 +2,18 @@
 
 const app = require('./app');
 const log = require('./logger');
-const conf = require('./config')();
 
-require('./mocks');
-require('./fallback');
-require('./dead-end');
+module.exports = options => {
+  const config = require('./config')(options);
 
-app.process = app.listen(conf.servePort, () => {
-  let fallbacks = Object.keys(conf.fallbacks);
-  log.default('Mocks set for', fallbacks.join(', '));
-  log.success(`Server is running at http://127.0.0.1:${conf.servePort}`);
-});
+  require('./mocks')(config);
+  require('./fallback')(config);
+  require('./dead-end');
+
+  app.process = app.listen(config.servePort, () => {
+    let fallbacks = Object.keys(config.fallbacks);
+    log.default('Mocks set for', fallbacks.join(', '));
+    log.success(`Server is running at http://127.0.0.1:${config.servePort}`);
+  });
+};
+

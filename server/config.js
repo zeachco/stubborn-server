@@ -2,7 +2,13 @@
 
 const path = require('path');
 const log = require('./logger');
-let config = require(path.join(process.cwd(), 'stubborn'));
+let config;
+
+try {
+  config = require(path.join(process.cwd(), 'stubborn'));
+} catch (e) {
+  config = {};
+}
 
 module.exports = options => {
   config = Object.assign(config, options || {});
