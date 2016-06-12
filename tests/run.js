@@ -1,4 +1,7 @@
 var stub = require('..');
-stub.start();
+stub.start({
+  verbose: true,
+  servePort: 9876
+});
 stub.stop();
-console.log('server started and stopped without issues');
+stub.log.success('server started and stopped without issues');
