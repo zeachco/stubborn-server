@@ -19,9 +19,11 @@ module.exports = config => {
 
   const requireMock = (req) => {
     let mock = null;
+    const pathToMocks = config.pathToMocks[0] === '/' ?
+      config.pathToMocks :
+      path.join(process.cwd(), config.pathToMocks);
     const file = path.join(
-      process.cwd(),
-      config.pathToMocks,
+      pathToMocks,
       req.url.split('?')[0],
       req.method.toLowerCase(),
       config.namespace ? '-' + config.namespace : ''
