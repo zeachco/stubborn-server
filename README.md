@@ -1,7 +1,7 @@
 # Is your backend stubborn? [![Build Status](https://travis-ci.org/zeachco/stubborn-server.png)](https://travis-ci.org/zeachco/stubborn-server)
 NodeJS Stub server for test and dev purposes
 
-It allow :
+It allows:
 - mocking with static json
 - mocking with dynamic request handlers based on [Express  requests](http://expressjs.com/en/4x/api.html#req)
 - storing/accessing a memory database
@@ -49,11 +49,12 @@ then start server with something like this
 
 ```javascript
 const Stubborn = require('stubborn-server');
+const stubbornClient = Stubborn();
 
-Stubborn.start(/* config to extend ./stubborn.js if required */);
+stubbornClient.start(/* config to extend ./stubborn.js if required */);
 
 // from this point, you may run your queries
 
-// Stubborn.stop();
+// stubbornClient.stop();
 
 ```
