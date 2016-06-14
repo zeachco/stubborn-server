@@ -1,4 +1,4 @@
-const Stubborn = require('./'); // stubborn-server
+const Stubborn = require('./')(); // stubborn-server
 
 Stubborn.start({
   verbose: true,

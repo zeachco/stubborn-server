@@ -1,4 +1,4 @@
-var stub = require('..');
+var stub = require('..')();
 stub.start({
   verbose: true,
   servePort: 9876

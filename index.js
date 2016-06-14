@@ -2,9 +2,11 @@
 
 const fileConfig = require('./server/config');
 
-const api = {};
-api.log = require('./server/logger');
-api.start = (config) => fileConfig(config) && require('./server')(config) && api;
-api.stop = () => require('./server/app').process.close() || api;
+module.exports = defaultConfig => {
+  const api = {};
+  api.log = require('./server/logger');
+  api.start = config => fileConfig(Object.assign({}, config, defaultConfig)) && require('./server')(config) && api;
+  api.stop = () => require('./server/app').process.close() || api;
+  return api;
+};
 
-module.exports = api;
