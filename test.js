@@ -13,16 +13,16 @@ const testConfig = {
   }
 };
 
-test.beforeEach(t => {
+test.beforeEach(() => {
   stub.config.set(testConfig);
 });
 
-test('server exposed api', t => {
+test('server exposed api', () => {
   stub.start();
   stub.stop();
 });
 
-test('exposed logger', t => {
+test('exposed logger', () => {
   for (let k in stub.log) {
     stub.log[k](`stubborn.log.${k}`);
   }

@@ -4,9 +4,9 @@
   "description": "NodeJS Stub server for test and dev purposes",
   "main": "index.js",
   "scripts": {
-    "preversion": "eslint && ava -v -s",
+    "preversion": "npm test",
     "start": "node index.js",
-    "test": "ava -v -s",
+    "test": "ava -v -s && eslint ./*.js",
     "test:watch": "ava --watch -v -s"
   },
   "repository": {
