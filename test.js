@@ -105,3 +105,23 @@ test('namespace switching', t => {
     });
   });
 });
+
+test('namespace switching', t => {
+  return new Promise((resolve, reject) => {
+    stub.start(testConfig);
+    stub.config.set({
+      namespace: 'alt'
+    });
+    let target = 'http://127.0.0.1:' + testConfig.servePort + '/api/path/to/service';
+    request(target, function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        let data = JSON.parse(body);
+        t.is(data.type, 'this is an alternative mock service');
+        resolve();
+      } else {
+        reject(error);
+      }
+      stub.stop();
+    });
+  });
+});
