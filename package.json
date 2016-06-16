@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "eslint ./**.js ./server/* && node tests",
-    "demo": "nodemon --exec \"eslint *.js & node\" demo.js"
+    "test": "ava -v -s",
+    "test:watch": "ava --watch -v -s"
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,9 @@
     "express-http-proxy": "^0.6.0"
   },
   "devDependencies": {
+    "ava": "^0.15.2",
     "eslint": "^2.10.2",
-    "nodemon": "^1.9.2"
+    "nodemon": "^1.9.2",
+    "request": "^2.72.0"
   }
 }

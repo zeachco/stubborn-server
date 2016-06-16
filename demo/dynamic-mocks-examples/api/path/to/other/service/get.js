@@ -10,6 +10,7 @@ module.exports = (req, res, utils) => {
   res.json({
     test: 'targeting',
     whatItRealyGet: __filename,
-    db: db
+    db: db,
+    type: 'this is a mock service'
   });
 };

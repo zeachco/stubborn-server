@@ -18,6 +18,7 @@ content might look like
 ```javascript
 module.exports = {
   verbose: true,
+  namespace: '', // help switching between different senarios
   pathToMocks: 'mock-examples', // mock folder relative path
   servePort: 8059,
   fallbacks: {
@@ -31,6 +32,7 @@ or a `stubborn.json` file
 ```json
 {
   "verbose": true,
+  "namespace": "",
   "pathToMocks": "mock-examples",
   "servePort": 8059,
   "fallbacks": {
@@ -48,13 +50,12 @@ this will have the following behaviour
 then start server with something like this
 
 ```javascript
-const Stubborn = require('stubborn-server');
-const stubbornClient = Stubborn();
+const stub = require('stubborn-server');
 
-stubbornClient.start(/* config to extend ./stubborn.js if required */);
+stub.start(/* config to extend ./stubborn.js if required */);
 
 // from this point, you may run your queries
 
-// stubbornClient.stop();
+// stub.stop();
 
 ```

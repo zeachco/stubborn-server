@@ -3,6 +3,6 @@ module.exports = (req, res) => {
     url: req.url,
     port: req.port,
     hostname: req.hostname,
-    type: 'this is a mock service'
+    type: 'this is an alternative mock service'
   });
 };
