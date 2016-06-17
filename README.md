@@ -10,10 +10,8 @@ It allows:
 - usage of aliases to get alternate mock responses (allow scenarios flexibility)
 - integrates well with test framework
 
-### how to use
-
-create a `stubborn.js` file where you want to use it
-content might look like
+## how to use
+create a `stubborn.js` file where you want to use it content might look like
 
 ```javascript
 module.exports = {
@@ -27,6 +25,7 @@ module.exports = {
   }
 };
 ```
+
 or a `stubborn.json` file
 
 ```json
@@ -44,8 +43,7 @@ or a `stubborn.json` file
 
 create some mocks like the one given in [demo](demo)
 
-this will have the following behaviour
-![mock behaviour](https://raw.githubusercontent.com/zeachco/stubborn-server/master/demo/memory-database.gif)
+this will have the following behaviour ![mock behaviour](https://raw.githubusercontent.com/zeachco/stubborn-server/master/demo/memory-database.gif)
 
 then start server with something like this
 
@@ -56,6 +54,11 @@ stub.start(/* config to extend ./stubborn.js if required */);
 
 // from this point, you may run your queries
 
-// stub.stop();
+stub.config.set({
+  namespace: 'alt'
+});
 
+// from this point, you may run other queries
+
+stub.stop();
 ```
