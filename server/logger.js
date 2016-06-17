@@ -23,7 +23,7 @@ var wrap = (color, args) => {
   }
   args = args.map(t => typeof t === 'object' ? JSON.stringify(t, null, 2) : t).map(t => chalk[color].bold(t));
   args.splice(0, 0, prefix);
-  global.console.log.apply(this, args);
+  global.console.log.apply(global.console, args);
 };
 
 module.exports = {
