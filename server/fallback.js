@@ -5,11 +5,10 @@ const express = require('express');
 const app = require('./app');
 const config = require('./config').get();
 
-Object.keys(config.fallbacks).forEach(key => {
-  let target = config.fallbacks[key];
-  if (target.indexOf(':') > -1) {
-    app.use(key, (req, res, next) => {
-      proxy(target, {
+config.fallbacks.forEach(item => {
+  if (item.target.indexOf(':') > -1) {
+    app.use(item.url, (req, res, next) => {
+      proxy(item.target, {
         forwardPath: function(req) {
           return require('url').parse(req.url).path;
         },
@@ -20,6 +19,6 @@ Object.keys(config.fallbacks).forEach(key => {
       })(req, res, next);
     });
   } else { // We assume the target is a local folder if not an url
-    app.use(key.replace(/\*$/, ''), express.static(target));
+    app.use(item.url.replace(/\*$/, ''), express.static(item.target));
   }
 });
