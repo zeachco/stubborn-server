@@ -8,9 +8,12 @@ const testConfig = {
   verbose: false,
   namespace: '',
   pathToMocks: 'demo/dynamic-mocks-examples',
-  fallbacks: {
-    '/home/*': 'demo/static/'
-  }
+  fallbacks: [
+    {
+      url: '/home/*',
+      target: 'demo/static/'
+    }
+  ]
 };
 
 test.beforeEach(() => {

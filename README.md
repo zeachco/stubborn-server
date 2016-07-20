@@ -19,10 +19,16 @@ module.exports = {
   namespace: '', // help switching between different senarios
   pathToMocks: 'mock-examples', // mock folder relative path
   servePort: 8059,
-  fallbacks: {
-    '/assets/*': '/path/to/static/folder',
-    '/*': 'localhost:3000'
-  }
+  fallbacks: [
+    {
+      url: '/assets/*',
+      target: '/path/to/static/folder'
+    },
+    {
+      url: '/*':,
+      target: 'localhost:3000'
+    }
+  ]
 };
 ```
 
@@ -34,10 +40,16 @@ or a `stubborn.json` file
   "namespace": "",
   "pathToMocks": "mock-examples",
   "servePort": 8059,
-  "fallbacks": {
-    "/assets/*": "/path/to/static/folder",
-    "/*": "localhost:3000"
-  }
+  "fallbacks": [
+    {
+      url: "/assets/*",
+      target: "/path/to/static/folder"
+    },
+    {
+      url: "/*",
+      target: "localhost:3000"
+    }
+  ]
 }
 ```
 
