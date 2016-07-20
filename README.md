@@ -1,9 +1,11 @@
 # Is your backend stubborn? [![Build Status](https://travis-ci.org/zeachco/stubborn-server.png)](https://travis-ci.org/zeachco/stubborn-server)
+
 NodeJS Stub server for test and dev purposes
 
 It allows:
+
 - mocking with static json
-- mocking with dynamic request handlers based on [Express  requests](http://expressjs.com/en/4x/api.html#req)
+- mocking with dynamic request handlers based on [Express requests](http://expressjs.com/en/4x/api.html#req)
 - storing/accessing a memory database
 - separate database per namespace
 - reset a db at anytime with default values
@@ -11,6 +13,7 @@ It allows:
 - integrates well with test framework
 
 ## how to use
+
 create a `stubborn.js` file where you want to use it content might look like
 
 ```javascript
@@ -22,7 +25,7 @@ module.exports = {
   fallbacks: [
     {
       url: '/assets/*',
-      target: '/path/to/static/folder'
+      path: '/path/to/static/folder'
     },
     {
       url: '/*':,
@@ -42,18 +45,18 @@ or a `stubborn.json` file
   "servePort": 8059,
   "fallbacks": [
     {
-      url: "/assets/*",
-      target: "/path/to/static/folder"
+      "url": "/assets/*",
+      "path": "/path/to/static/folder"
     },
     {
-      url: "/*",
-      target: "localhost:3000"
+      "url": "/*",
+      "target": "localhost:3000"
     }
   ]
 }
 ```
 
-create some mocks like the one given in [demo](demo)
+create some mocks like the one given in <demo>
 
 this will have the following behaviour ![mock behaviour](https://raw.githubusercontent.com/zeachco/stubborn-server/master/demo/memory-database.gif)
 

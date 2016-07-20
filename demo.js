@@ -3,23 +3,25 @@ const stubborn = require('./'); // stubborn-server
 stubborn.start({
   verbose: true,
   namespace: '',
-  fallbacks: {
-    '/*': 'http://127.0.0.1:3000',
-    '/css/*': 'demo/static',
-    '/js/*': 'demo/static/app',
-    '/assets/*': 'demo/static/images'
-  }
+  fallbacks: [{
+    url: '/css/',
+    path: 'demo/static'
+  }, {
+    url: '/*',
+    target: 'http://127.0.0.1:3000'
+  }]
 });
 
 stubborn.set({
   verbose: true,
   namespace: 'senario-1',
-  fallbacks: {
-    '/*': 'http://127.0.0.1:3000',
-    '/css/*': 'demo/static',
-    '/js/*': 'demo/static/app',
-    '/assets/*': 'demo/static/images'
-  }
+  fallbacks: [{
+    url: '/css/',
+    path: 'demo/static'
+  }, {
+    url: '/*',
+    target: 'http://127.0.0.1:3000'
+  }]
 });
 
 stubborn.stop();
