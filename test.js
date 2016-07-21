@@ -23,11 +23,18 @@ test('server exposed api', () => {
   stub.stop();
 });
 
-test('exposed logger', () => {
-  for (let k in stub.log) {
-    stub.log[k](`stubborn.log.${k}`);
-  }
-});
+Object.keys(stub.log.mode).forEach(testLoggerMode);
+
+function testLoggerMode(tm) {
+  test(`logger on mode "${tm}"`, () => {
+    stub.log.setMode(tm);
+    ['debug', 'default', 'info', 'success', 'mock', 'warn', 'error']
+    .forEach(function(mode) {
+      stub.log[mode](`stubborn.log.${mode}`);
+    });
+  });
+}
+
 
 test('configuration management', t => {
   t.is(stub.config.get().namespace, fileConfig.namespace);
@@ -51,7 +58,7 @@ test('mocks', t => {
   return new Promise((resolve, reject) => {
     stub.start(testConfig);
     let target = 'http://127.0.0.1:' + testConfig.servePort + '/api/path/to/service';
-    request(target, function (error, response, body) {
+    request(target, function(error, response, body) {
       // type = 'this is a mock service'
       if (!error && response.statusCode == 200) {
         let data = JSON.parse(body);
@@ -69,7 +76,7 @@ test('statics files', t => {
   return new Promise((resolve, reject) => {
     stub.start();
     let target = 'http://127.0.0.1:' + testConfig.servePort + '/home';
-    request(target, function (error, response, body) {
+    request(target, function(error, response, body) {
       if (!error && response.statusCode == 200) {
         t.not(body.indexOf('This static file is mocked'), -1);
         resolve({
@@ -94,7 +101,7 @@ test('namespace switching', t => {
       namespace: 'alt'
     });
     let target = 'http://127.0.0.1:' + testConfig.servePort + '/api/path/to/service';
-    request(target, function (error, response, body) {
+    request(target, function(error, response, body) {
       if (!error && response.statusCode == 200) {
         let data = JSON.parse(body);
         t.is(data.type, 'this is an alternative mock service');
