@@ -19,10 +19,10 @@ try {
 module.exports = {
   set: (options) => {
     config = Object.assign(config, options || {});
-    log.verbose(config.verbose);
+    log.setMode(config.logMode);
 
     [
-      'verbose = boolean',
+      'logMode = string',
       'namespace = string',
       'servePort = number',
       'fallbacks = object'

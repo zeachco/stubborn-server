@@ -5,7 +5,7 @@ const fileConfig = require('./stubborn');
 const request = require('request');
 const testConfig = {
   servePort: 9987,
-  verbose: false,
+  logMode: 'none',
   namespace: '',
   pathToMocks: 'demo/dynamic-mocks-examples',
   fallbacks: [{

@@ -18,7 +18,7 @@ create a `stubborn.js` file where you want to use it content might look like
 
 ```javascript
 module.exports = {
-  verbose: true,
+  logMode: 'all', // can be 'all', 'info', 'mock', 'warn', 'error' or 'none'
   namespace: '', // help switching between different senarios
   pathToMocks: 'mock-examples', // mock folder relative path
   servePort: 8059,
@@ -39,7 +39,7 @@ or a `stubborn.json` file
 
 ```json
 {
-  "verbose": true,
+  "logMode": "mock",
   "namespace": "",
   "pathToMocks": "mock-examples",
   "servePort": 8059,
