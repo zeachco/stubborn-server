@@ -13,7 +13,7 @@ const utils = {
 };
 
 const MockBehaviours = {
-  'function': (data, req, res) => data(req, res, utils),
+  'function': (mocker, req, res) => mocker(req, res, utils, mocker),
   'object': (data, req, res) => res.json(data),
   'null': (data, req, res) => res.end()
 };

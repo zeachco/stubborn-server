@@ -62,10 +62,11 @@ test('mocks', t => {
       // type = 'this is a mock service'
       if (!error && response.statusCode == 200) {
         let data = JSON.parse(body);
+        t.truthy(data);
         t.is(data.type, 'this is a mock service');
         resolve();
       } else {
-        reject(error);
+        reject(error || response.statusCode);
       }
       stub.stop();
     });
@@ -78,11 +79,8 @@ test('statics files', t => {
     let target = 'http://127.0.0.1:' + testConfig.servePort + '/home';
     request(target, function(error, response, body) {
       if (!error && response.statusCode == 200) {
-        t.not(body.indexOf('This static file is mocked'), -1);
-        resolve({
-          error,
-          body
-        });
+        t.true(body.indexOf('This static file is mocked') !== -1);
+        resolve();
       } else {
         reject({
           error,
@@ -104,10 +102,38 @@ test('namespace switching', t => {
     request(target, function(error, response, body) {
       if (!error && response.statusCode == 200) {
         let data = JSON.parse(body);
+        t.truthy(data);
         t.is(data.type, 'this is an alternative mock service');
         resolve();
       } else {
-        reject(error);
+        reject(error || response.statusCode);
+      }
+      stub.stop();
+    });
+  });
+});
+
+test('wildcard paths', t => {
+
+  let target = 'http://127.0.0.1:' + testConfig.servePort + '/api/path/abc123/more/paths';
+
+  return new Promise((resolve, reject) => {
+    stub.start(Object.assign({}, testConfig, {
+      fallbacks: [{
+        url: /api\/path\/([^\/]+)/,
+        mock: 'api/path/__wildcard__/more/paths'
+      }]
+    }));
+
+    request(target, function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        let data = JSON.parse(body);
+        t.truthy(data);
+        t.is(data.type, 'dynamic-mock');
+        t.is(data.token, 'abc123');
+        resolve();
+      } else {
+        reject(error || response.statusCode);
       }
       stub.stop();
     });

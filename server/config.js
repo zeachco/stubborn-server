@@ -34,7 +34,7 @@ module.exports = {
     });
 
     config.fallbacks.forEach(fallback => {
-      if (!fallback.target && !fallback.path) {
+      if (!fallback.target && !fallback.path && !fallback.mock) {
         throw new Error({
           message: 'fallback must contain at least "path" or "target" values',
           data: fallback

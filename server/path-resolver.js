@@ -4,7 +4,6 @@ const config = require('./config');
 const path = require('path');
 
 module.exports = function pathResolver(req) {
-  console.log(req.url);
   let conf = config.get();
   let mock = null;
 
@@ -13,12 +12,29 @@ module.exports = function pathResolver(req) {
     conf.pathToMocks :
     path.join(process.cwd(), conf.pathToMocks);
 
-  const file = path.join(
+  let file = path.join(
     pathToMocks,
     req.url.split('?')[0],
     req.method.toLowerCase() + (conf.namespace ? '-' + conf.namespace : '')
   );
-  delete require.cache[require.resolve(file)];
-  mock = require(file);
+
+  try {
+    let resolved = require.resolve(file);
+    delete require.cache[resolved];
+    mock = require(file);
+  } catch (e) {
+    const firstMatching = conf.fallbacks.filter(f => !!f.mock && f.url.test(req.url))[0];
+    if (firstMatching) {
+      file = path.join(
+        pathToMocks,
+        firstMatching.mock,
+        req.method.toLowerCase() + (conf.namespace ? '-' + conf.namespace : '')
+      );
+      mock = require(file);
+      mock.matches = firstMatching.url.exec(req.url);
+    } else {
+      throw 'no';
+    }
+  }
   return mock;
 };
