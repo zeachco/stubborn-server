@@ -30,6 +30,10 @@ module.exports = {
     {
       url: '/*':,
       target: 'localhost:3000'
+    },
+    {
+      url: /api\/path\/([^\/]+)/,
+      mock: 'api/path/__wildcard__/more/paths'
     }
   ]
 };
