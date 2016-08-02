@@ -114,13 +114,38 @@ test('namespace switching', t => {
 });
 
 test('wildcard paths', t => {
-
   let target = 'http://127.0.0.1:' + testConfig.servePort + '/api/path/abc123/more/paths';
 
   return new Promise((resolve, reject) => {
     stub.start(Object.assign({}, testConfig, {
       fallbacks: [{
         url: /api\/path\/([^\/]+)/,
+        mock: 'api/path/__wildcard__/more/paths'
+      }]
+    }));
+
+    request(target, function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        let data = JSON.parse(body);
+        t.truthy(data);
+        t.is(data.type, 'dynamic-mock');
+        t.is(data.token, 'abc123');
+        resolve();
+      } else {
+        reject(error || response.statusCode);
+      }
+      stub.stop();
+    });
+  });
+});
+
+test('wildcard paths with string', t => {
+  let target = 'http://127.0.0.1:' + testConfig.servePort + '/api/path/abc123/more/paths';
+
+  return new Promise((resolve, reject) => {
+    stub.start(Object.assign({}, testConfig, {
+      fallbacks: [{
+        url: 'api\/path\/([^\/]+)',
         mock: 'api/path/__wildcard__/more/paths'
       }]
     }));

@@ -39,6 +39,8 @@ module.exports = {
           message: 'fallback must contain at least "path" or "target" values',
           data: fallback
         });
+      } else if (fallback.mock && fallback.url.constructor.name === 'String') {
+        fallback.url = new RegExp(fallback.url);
       }
     });
 

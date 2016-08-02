@@ -23,15 +23,15 @@ module.exports = {
   pathToMocks: 'mock-examples', // mock folder relative path
   servePort: 8059,
   fallbacks: [
-    {
+    { // using "path" key tells that we refer to a local file
       url: '/assets/*',
       path: '/path/to/static/folder'
     },
-    {
+    { // using "target" key tells that we refer to an http location and is treated as a server proxy
       url: '/*':,
       target: 'localhost:3000'
     },
-    {
+    { // using "mock" key tells that we refer to an existing mock, a direct regex can be used here
       url: /api\/path\/([^\/]+)/,
       mock: 'api/path/__wildcard__/more/paths'
     }
@@ -55,6 +55,10 @@ or a `stubborn.json` file
     {
       "url": "/*",
       "target": "localhost:3000"
+    },
+    {
+      "url": "api\/path\/([^\/]+)",
+      "target": "api/path/__wildcard__/more/paths"
     }
   ]
 }
