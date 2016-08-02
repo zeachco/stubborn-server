@@ -36,7 +36,7 @@ module.exports = {
     config.fallbacks.forEach(fallback => {
       if (!fallback.target && !fallback.path && !fallback.mock) {
         throw new Error({
-          message: 'fallback must contain at least "path" or "target" values',
+          message: 'fallback must contain at least "path", "mock" or "target" keys',
           data: fallback
         });
       } else if (fallback.mock && fallback.url.constructor.name === 'String') {
