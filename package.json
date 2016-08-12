@@ -6,8 +6,8 @@
   "scripts": {
     "preversion": "npm test",
     "start": "node index.js",
-    "test": "ava -v -s && eslint ./*.js",
-    "test:watch": "ava --watch -v -s"
+    "test": "ava -vs && eslint ./*.js",
+    "test:watch": "ava -wvs"
   },
   "repository": {
     "type": "git",

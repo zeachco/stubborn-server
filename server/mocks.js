@@ -2,7 +2,6 @@
 const log = require('./logger');
 const path = require('path');
 const memoryDb = require('./memory-db');
-const app = require('./app');
 const config = require('./config');
 const pathResolver = require('./path-resolver');
 
@@ -17,31 +16,32 @@ const MockBehaviours = {
   'object': (data, req, res) => res.json(data),
   'null': (data, req, res) => res.end()
 };
-
-app.use((req, res, next) => {
-  let mocker = null;
-  try {
-    mocker = pathResolver(req);
+module.exports = app => {
+  app.use((req, res, next) => {
+    let mocker = null;
     try {
-      MockBehaviours[typeof mocker](mocker, req, res);
-      log.mock(`${req.method} ${req.url}`);
+      mocker = pathResolver(req);
+      try {
+        MockBehaviours[typeof mocker](mocker, req, res);
+        log.mock(`${req.method} ${req.url}`);
+      } catch (e) {
+        log.error({
+          url: req.url,
+          method: req.method,
+          error: e
+        });
+      }
     } catch (e) {
-      log.error({
-        url: req.url,
-        method: req.method,
-        error: e
-      });
+      if (e.code === 'MODULE_NOT_FOUND') {
+        log.debug(`Fallback for ${req.method.toUpperCase()} ${req.url}`);
+      } else {
+        log.error({
+          url: req.url,
+          method: req.method,
+          error: e
+        });
+      }
+      next();
     }
-  } catch (e) {
-    if (e.code === 'MODULE_NOT_FOUND') {
-      log.debug(`Fallback for ${req.method.toUpperCase()} ${req.url}`);
-    } else {
-      log.error({
-        url: req.url,
-        method: req.method,
-        error: e
-      });
-    }
-    next();
-  }
-});
+  });
+};

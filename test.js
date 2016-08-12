@@ -66,7 +66,7 @@ test('mocks', t => {
         t.is(data.type, 'this is a mock service');
         resolve();
       } else {
-        reject(error || response.statusCode);
+        reject(error || response.statusCode + ' ' + response.body);
       }
       stub.stop();
     });
@@ -82,10 +82,7 @@ test('statics files', t => {
         t.true(body.indexOf('This static file is mocked') !== -1);
         resolve();
       } else {
-        reject({
-          error,
-          body
-        });
+        reject(error || response.statusCode + ' ' + response.body);
       }
       stub.stop();
     });
@@ -106,7 +103,7 @@ test('namespace switching', t => {
         t.is(data.type, 'this is an alternative mock service');
         resolve();
       } else {
-        reject(error || response.statusCode);
+        reject(error || response.statusCode + ' ' + response.body);
       }
       stub.stop();
     });
@@ -132,7 +129,7 @@ test('wildcard paths', t => {
         t.is(data.token, 'abc123');
         resolve();
       } else {
-        reject(error || response.statusCode);
+        reject(error || response.statusCode + ' ' + response.body);
       }
       stub.stop();
     });
@@ -158,7 +155,29 @@ test('wildcard paths with string', t => {
         t.is(data.token, 'abc123');
         resolve();
       } else {
-        reject(error || response.statusCode);
+        reject(error || response.statusCode + ' ' + response.body);
+      }
+      stub.stop();
+    });
+  });
+});
+
+test('express extensions with \'includes\' entries', t => {
+  let target = 'http://127.0.0.1:' + testConfig.servePort + '/user/abc123/images/def456/thumb';
+
+  return new Promise((resolve, reject) => {
+    stub.start(Object.assign({}, testConfig, {
+      includes: ['__includes']
+    }));
+    request(target, function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        let data = JSON.parse(body);
+        t.truthy(data);
+        t.is(data.userId, 'abc123');
+        t.is(data.imageId, 'def456');
+        resolve();
+      } else {
+        reject(error || response.statusCode + ' ' + response.body);
       }
       stub.stop();
     });

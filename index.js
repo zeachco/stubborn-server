@@ -1,12 +1,13 @@
 'use strict';
 const config = require('./server/config');
+const serverStart = require('./server/main');
 
 const api = {};
 api.log = require('./server/logger');
 api.config = config;
 api.start = options => {
   config.set(options);
-  require('./server/main')();
+  serverStart();
 };
 
 api.set = config.set;

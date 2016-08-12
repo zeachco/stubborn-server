@@ -2,6 +2,7 @@
 
 const config = require('./config');
 const path = require('path');
+const logger = require('./logger');
 
 module.exports = function pathResolver(req) {
   let conf = config.get();

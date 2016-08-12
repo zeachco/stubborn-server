@@ -44,6 +44,7 @@ module.exports = {
       }
     });
 
+    config.includes = config.includes || [];
     log.debug('Server configuration', config);
   },
   get: () => config
