@@ -167,7 +167,7 @@ test('express extensions with \'includes\' entries', t => {
 
   return new Promise((resolve, reject) => {
     stub.start(Object.assign({}, testConfig, {
-      includes: ['__includes']
+      includes: ['__custom/express_handlers']
     }));
     request(target, function(error, response, body) {
       if (!error && response.statusCode == 200) {

@@ -22,6 +22,7 @@ module.exports = {
   namespace: '', // help switching between different senarios
   pathToMocks: 'mock-examples', // mock folder relative path
   servePort: 8059,
+  includes: ['__custom/express_handlers'], // List of files into the mock folder where the express app will be exposed for custom handling
   fallbacks: [
     { // using "path" key tells that we refer to a local file
       url: '/assets/*',
@@ -47,6 +48,7 @@ or a `stubborn.json` file
   "namespace": "",
   "pathToMocks": "mock-examples",
   "servePort": 8059,
+  "includes": ["__custom/express_handlers"],
   "fallbacks": [
     {
       "url": "/assets/*",
@@ -64,7 +66,10 @@ or a `stubborn.json` file
 }
 ```
 
-create some mocks like the one given in <demo>
+create some mocks like the one given in
+
+<demo>
+</demo>
 
 this will have the following behaviour ![mock behaviour](https://raw.githubusercontent.com/zeachco/stubborn-server/master/demo/memory-database.gif)
 
