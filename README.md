@@ -1,4 +1,4 @@
-# Is your backend stubborn? [![Build Status](https://travis-ci.org/zeachco/stubborn-server.png)](https://travis-ci.org/zeachco/stubborn-server)
+# Is your backend stubborn? [![Build Status](https://travis-ci.org/zeachco/stubborn-server.png)](https://travis-ci.org/zeachco/stubborn-server) (node v4.2.2 .. v6.3.x)
 
 NodeJS Stub server for test and dev purposes
 
