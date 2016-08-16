@@ -183,3 +183,26 @@ test('express extensions with \'includes\' entries', t => {
     });
   });
 });
+
+test('custom variable passed trough configuration', t => {
+  let target = 'http://127.0.0.1:' + testConfig.servePort + '/api/path/to/service';
+
+  return new Promise((resolve, reject) => {
+    stub.start(Object.assign({}, testConfig, {
+      namespace: 'config',
+      customPath: 'test'
+    }));
+    // stub.config.set('customVar', '123456')
+    request(target, function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        let data = JSON.parse(body);
+        t.truthy(data);
+        t.is(data.customPath, 'test');
+        resolve();
+      } else {
+        reject(error || response.statusCode + ' ' + response.body);
+      }
+      stub.stop();
+    });
+  });
+});
