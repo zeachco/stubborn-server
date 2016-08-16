@@ -192,7 +192,6 @@ test('custom variable passed trough configuration', t => {
       namespace: 'config',
       customPath: 'test'
     }));
-    // stub.config.set('customVar', '123456')
     request(target, function(error, response, body) {
       if (!error && response.statusCode == 200) {
         let data = JSON.parse(body);
