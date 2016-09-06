@@ -3,7 +3,7 @@ const test = require('ava');
 const stub = require('./');
 const fileConfig = require('./stubborn');
 const request = require('request');
-const testConfig = {
+const defaultTestConfig = {
   servePort: 9987,
   logMode: 'none',
   namespace: '',
@@ -15,7 +15,7 @@ const testConfig = {
 };
 
 test.beforeEach(() => {
-  stub.config.set(testConfig);
+  stub.config.set(defaultTestConfig);
 });
 
 test('server exposed api', () => {
@@ -47,17 +47,17 @@ test('configuration management', t => {
   });
   t.is(stub.config.get().namespace, 'test2');
 
-  stub.set(testConfig);
-  for (let key in testConfig) {
-    t.is(stub.config.get()[key], testConfig[key]);
+  stub.set(defaultTestConfig);
+  for (let key in defaultTestConfig) {
+    t.is(stub.config.get()[key], defaultTestConfig[key]);
   }
   stub.stop();
 });
 
 test('mocks', t => {
   return new Promise((resolve, reject) => {
-    stub.start(testConfig);
-    let target = 'http://127.0.0.1:' + testConfig.servePort + '/api/path/to/service';
+    stub.start(defaultTestConfig);
+    let target = 'http://127.0.0.1:' + defaultTestConfig.servePort + '/api/path/to/service';
     request(target, function(error, response, body) {
       // type = 'this is a mock service'
       if (!error && response.statusCode == 200) {
@@ -76,7 +76,7 @@ test('mocks', t => {
 test('statics files', t => {
   return new Promise((resolve, reject) => {
     stub.start();
-    let target = 'http://127.0.0.1:' + testConfig.servePort + '/home';
+    let target = 'http://127.0.0.1:' + defaultTestConfig.servePort + '/home';
     request(target, function(error, response, body) {
       if (!error && response.statusCode == 200) {
         t.true(body.indexOf('This static file is mocked') !== -1);
@@ -91,11 +91,11 @@ test('statics files', t => {
 
 test('namespace switching', t => {
   return new Promise((resolve, reject) => {
-    stub.start(testConfig);
+    stub.start(defaultTestConfig);
     stub.config.set({
       namespace: 'alt'
     });
-    let target = 'http://127.0.0.1:' + testConfig.servePort + '/api/path/to/service';
+    let target = 'http://127.0.0.1:' + defaultTestConfig.servePort + '/api/path/to/service';
     request(target, function(error, response, body) {
       if (!error && response.statusCode == 200) {
         let data = JSON.parse(body);
@@ -111,10 +111,10 @@ test('namespace switching', t => {
 });
 
 test('wildcard paths', t => {
-  let target = 'http://127.0.0.1:' + testConfig.servePort + '/api/path/abc123/more/paths';
+  let target = 'http://127.0.0.1:' + defaultTestConfig.servePort + '/api/path/abc123/more/paths';
 
   return new Promise((resolve, reject) => {
-    stub.start(Object.assign({}, testConfig, {
+    stub.start(Object.assign({}, defaultTestConfig, {
       fallbacks: [{
         url: /api\/path\/([^\/]+)/,
         mock: 'api/path/__wildcard__/more/paths'
@@ -137,10 +137,10 @@ test('wildcard paths', t => {
 });
 
 test('wildcard paths with string', t => {
-  let target = 'http://127.0.0.1:' + testConfig.servePort + '/api/path/abc123/more/paths';
+  let target = 'http://127.0.0.1:' + defaultTestConfig.servePort + '/api/path/abc123/more/paths';
 
   return new Promise((resolve, reject) => {
-    stub.start(Object.assign({}, testConfig, {
+    stub.start(Object.assign({}, defaultTestConfig, {
       fallbacks: [{
         url: 'api\/path\/([^\/]+)',
         mock: 'api/path/__wildcard__/more/paths'
@@ -162,33 +162,11 @@ test('wildcard paths with string', t => {
   });
 });
 
-test('express extensions with \'includes\' entries', t => {
-  let target = 'http://127.0.0.1:' + testConfig.servePort + '/user/abc123/images/def456/thumb';
-
-  return new Promise((resolve, reject) => {
-    stub.start(Object.assign({}, testConfig, {
-      includes: ['__custom/express_handlers']
-    }));
-    request(target, function(error, response, body) {
-      if (!error && response.statusCode == 200) {
-        let data = JSON.parse(body);
-        t.truthy(data);
-        t.is(data.userId, 'abc123');
-        t.is(data.imageId, 'def456');
-        resolve();
-      } else {
-        reject(error || response.statusCode + ' ' + response.body);
-      }
-      stub.stop();
-    });
-  });
-});
-
 test('custom variable passed trough configuration', t => {
-  let target = 'http://127.0.0.1:' + testConfig.servePort + '/api/path/to/service';
+  let target = 'http://127.0.0.1:' + defaultTestConfig.servePort + '/api/path/to/service';
 
   return new Promise((resolve, reject) => {
-    stub.start(Object.assign({}, testConfig, {
+    stub.start(Object.assign({}, defaultTestConfig, {
       namespace: 'config',
       customPath: 'test'
     }));
@@ -204,4 +182,10 @@ test('custom variable passed trough configuration', t => {
       stub.stop();
     });
   });
+});
+
+require('./tests/config-include')({
+  stub,
+  fileConfig,
+  defaultTestConfig
 });
