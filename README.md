@@ -1,5 +1,6 @@
 # Is your backend stubborn?
-### node v4.2.2 + [![Build Status](https://travis-ci.org/zeachco/stubborn-server.png)](https://travis-ci.org/zeachco/stubborn-server) 
+
+## Supports v4.x.x to latest [![Build Status](https://travis-ci.org/zeachco/stubborn-server.png)](https://travis-ci.org/zeachco/stubborn-server)
 
 NodeJS Stub server for test and dev purposes
 
@@ -13,9 +14,9 @@ It allows:
 - usage of aliases to get alternate mock responses (allow scenarios flexibility)
 - integrates well with test framework
 
-## how to use
+## Just show me code!
 
-create a `stubborn.js` file where you want to use it content might look like
+Ok... create a `stubborn.js` file where you want to use it content might look like
 
 ```javascript
 module.exports = {
@@ -67,14 +68,9 @@ or a `stubborn.json` file
 }
 ```
 
-create some mocks like the one given in
+Then write your initiator like the one given in `demo.js` or in `tests/...`
 
-<demo>
-</demo>
-
-this will have the following behaviour ![mock behaviour](https://raw.githubusercontent.com/zeachco/stubborn-server/master/demo/memory-database.gif)
-
-then start server with something like this
+Might look like this :
 
 ```javascript
 const stub = require('stubborn-server');
@@ -90,4 +86,49 @@ stub.config.set({
 // from this point, you may run other queries
 
 stub.stop();
+```
+
+I also have the intention of having this available directly from the command line.
+
+## Write your mocks
+
+Ok there is two ways of doing this, depending on the size of your project you might want to choose the "include way" for large projects if you don't wwant to sacrifice flexibility and have a direct access to the express app behind
+
+or you may just use the "configuration driven" approach which requires less server achitechture and rely on file system structure matching the api.
+
+#### The include way...
+
+basically you add `includes: ['path/to/handler']` to your configuration in order to use that handler
+
+Handler example:
+
+```javascript
+module.exports = (app, stub) => {
+  app.get('/custom/express/path', myHandler);
+  var stubbornConfig = stub.config.get();
+  // ...
+};
+```
+
+#### The configuration driven way...
+
+By default the application will look into the folder containing mocks and set by the `pathToMocks` variable from the configuration.
+
+the file name serving as a mock must match the request path plus the request method
+
+example of requesting `POST http://localhost:3000/api/service`: will try to find `.../path/to/mocks/api/service/post.js` (or `.../service/post.json` or even `.../service/post/index.js` etc.)
+
+Basicaly, it's a `require.resolve` that finds the files here.
+
+example of a basic configuration driven mock
+
+```javascript
+// this function is the handler being called
+module.exports = (req, res, utils) => {
+  // req / res are from express
+  console.log(req.method); // POST
+  var stubbornCurrentConfig = utils.config.get();
+  res.json(stubbornCurrentConfig);
+  // ...
+};
 ```

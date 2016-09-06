@@ -16,6 +16,6 @@ module.exports = app => {
       pathToMocks,
       include
     );
-    require(file)(app);
+    require(file)(app, require('..'));
   });
 };
