@@ -98,7 +98,8 @@ or you may just use the "configuration driven" approach which requires less serv
 
 #### The include way...
 
-basically you add `includes: ['path/to/handler']` to your configuration in order to use that handler
+basically you add `includes: ['path/to/handler']` to your configuration in order to use that handler.
+This is also a good way of using node's `require` to better organise your files or to fit your project structure better.
 
 Handler example:
 
