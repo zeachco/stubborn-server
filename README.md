@@ -92,9 +92,9 @@ I also have the intention of having this available directly from the command lin
 
 ## Write your mocks
 
-Ok there is two ways of doing this, depending on the size of your project you might want to choose the "include way" for large projects if you don't wwant to sacrifice flexibility and have a direct access to the express app behind
+Ok there is two ways of doing this, depending on the size of your project you might want to choose the "include way" for large projects if you don't want to sacrifice flexibility and have a direct access to the `express` engine behind
 
-or you may just use the "configuration driven" approach which requires less server achitechture and rely on file system structure matching the api.
+or you may just use the "configuration driven" approach which requires less server architecture and rely on file system structure matching the api.
 
 #### The include way...
 
