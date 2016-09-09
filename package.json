@@ -29,6 +29,7 @@
   "dependencies": {
     "body-parser": "^1.15.1",
     "chalk": "^1.1.3",
+    "cookie-parser": "^1.4.3",
     "express": "^4.13.4",
     "express-http-proxy": "^0.6.0"
   },
