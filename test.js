@@ -18,7 +18,8 @@ test.beforeEach(() => {
   stub.config.set(defaultTestConfig);
 });
 
-test('server exposed api', () => {
+test('server exposed api', t => {
+  t.truthy(stub.app);
   stub.start();
   stub.stop();
 });
@@ -184,6 +185,11 @@ test('custom variable passed trough configuration', t => {
   });
 });
 
+require('./tests/config-app')({
+  stub,
+  fileConfig,
+  defaultTestConfig
+});
 require('./tests/config-include')({
   stub,
   fileConfig,

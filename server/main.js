@@ -1,6 +1,5 @@
 'use strict';
 
-const app = require('./app');
 const log = require('./logger');
 const config = require('./config').get();
 
@@ -10,7 +9,7 @@ const Includes = require('./includes');
 const Fallbacks = require('./fallback');
 const Deadend = require('./dead-end');
 
-module.exports = () => {
+module.exports = (app) => {
   CleanRoutes(app);
   Includes(app);
   Mocks(app);

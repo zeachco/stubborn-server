@@ -92,44 +92,111 @@ I also have the intention of having this available directly from the command lin
 
 ## Write your mocks
 
-Ok there is two ways of doing this, depending on the size of your project you might want to choose the "include way" for large projects if you don't want to sacrifice flexibility and have a direct access to the `express` engine behind
+Mocks can be specified in three ways:
 
-or you may just use the "configuration driven" approach which requires less server architecture and rely on file system structure matching the api.
+1. Attaching express handlers
+2. Including express handlers
+3. Configuration-driven
 
-#### The include way...
+The way you choose depends on the needs of your project. You may also
+mix and match as the options are not exclusive.
 
-basically you add `includes: ['path/to/handler']` to your configuration in order to use that handler.
-This is also a good way of using node's `require` to better organise your files or to fit your project structure better.
+#### Attaching express handlers
 
-Handler example:
+When creating your mock server, a reference to the underlying raw express app
+is available. You can attach any response handlers you want:
+
+```javascript
+const stub = require('stubborn-server');
+
+// Attaching express handlers directly via `app` raw reference.
+stub.app.use('/my/url/path', (req, res) => {
+  // req / res are from express
+  console.log(req.method);
+  const response = {'hello': 'world'};
+  // stub is stubborn server object
+  console.log(stub.config.get());
+  res.json(response);
+});
+
+stub.start();
+// from this point, you may run your queries
+stub.stop();
+```
+
+#### Including express handlers
+
+Instead of manually attaching handlers to the app, you may specify paths to
+express handlers. The handlers will then be `require()`ed for you.
+
+This example is functionally equivalent to the example above:
+
+`main.js`:
+
+```javascript
+const stub = require('stubborn-server');
+
+stub.config.set({
+  includes: ['path/to/handler.js'],
+});
+
+stub.start();
+// from this point, you may run your queries
+stub.stop();
+```
+
+`handler.js`:
 
 ```javascript
 module.exports = (app, stub) => {
-  app.get('/custom/express/path', myHandler);
-  var stubbornConfig = stub.config.get();
-  // ...
+  app.use('/my/url/path', (req, res) => {
+    // req / res are from express
+    console.log(req.method);
+    const response = {'hello': 'world'};
+    // stub is stubborn server object
+    console.log(stub.config.get());
+    res.json(response);
+  });
 };
 ```
 
-#### The configuration driven way...
+#### Configuration-driven
 
-By default the application will look into the folder containing mocks and set by the `pathToMocks` variable from the configuration.
+By default, when the server recieves a request it will look into the directory
+specified by the `pathToMocks` configuration option for a mock response.
 
-the file name serving as a mock must match the request path plus the request method
+**The file name serving as a mock must match the request path plus the request
+method.**
 
-example of requesting `POST http://localhost:3000/api/service`: will try to find `.../path/to/mocks/api/service/post.js` (or `.../service/post.json` or even `.../service/post/index.js` etc.)
+For example, a `POST` request to `http://localhost:3000/api/service` will try
+to find files at the following locations:
 
-Basicaly, it's a `require.resolve` that finds the files here.
+ * `/path/to/mocks/api/service/post.js`
+ * `/path/to/mocks/api/service/post.json`
+ * `/path/to/mocks/api/service/post/index.js`
+ * `/path/to/mocks/api/service/post/index.json`
 
-example of a basic configuration driven mock
+
+Basically, it's a `require.resolve` that finds the proper mock response files.
+
+The following is an example of a basic configuration driven `post.js` mock:
 
 ```javascript
 // this function is the handler being called
-module.exports = (req, res, utils) => {
+module.exports = (req, res, stub) => {
   // req / res are from express
   console.log(req.method); // POST
-  var stubbornCurrentConfig = utils.config.get();
-  res.json(stubbornCurrentConfig);
-  // ...
+  // stub is stubborn server object
+  console.log(stub.config.get());
+  res.json({ 'hello': 'world' });
 };
+```
+
+and a `post.json` mock that returns the same mock response data:
+
+```javascript
+{
+  "hello": "world"
+}
+
 ```
