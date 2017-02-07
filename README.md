@@ -1,5 +1,7 @@
 # Is your backend stubborn?
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/zeachco/stubborn-server.svg)](https://greenkeeper.io/)
+
 ## Supports v4.x.x to latest [![Build Status](https://travis-ci.org/zeachco/stubborn-server.png)](https://travis-ci.org/zeachco/stubborn-server)
 
 NodeJS Stub server for test and dev purposes
