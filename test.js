@@ -27,11 +27,12 @@ test('server exposed api', t => {
 Object.keys(stub.log.mode).forEach(testLoggerMode);
 
 function testLoggerMode(tm) {
-  test(`logger on mode "${tm}"`, () => {
+  test(`logger on mode "${tm}"`, t => {
     stub.log.setMode(tm);
     ['debug', 'default', 'info', 'success', 'mock', 'warn', 'error']
       .forEach(function(mode) {
         stub.log[mode](`stubborn.log.${mode}`);
+        t.pass();
       });
   });
 }
