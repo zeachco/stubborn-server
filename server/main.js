@@ -7,7 +7,6 @@ const CleanRoutes = require('./clean-express-routes');
 const Mocks = require('./mocks');
 const Includes = require('./includes');
 const Fallbacks = require('./fallback');
-const Deadend = require('./dead-end');
 
 module.exports = (app) => {
   CleanRoutes(app);

@@ -1,6 +1,5 @@
 'use strict';
 const log = require('./logger');
-const path = require('path');
 const memoryDb = require('./memory-db');
 const config = require('./config');
 const pathResolver = require('./path-resolver');
