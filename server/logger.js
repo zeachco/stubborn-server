@@ -9,7 +9,7 @@ const Modes = {
   WARN: ['warn', 'error'],
   ERR: ['error'],
   NONE: []
-}
+};
 
 let currentMode = Modes.ALL;
 

@@ -30,9 +30,9 @@ function testLoggerMode(tm) {
   test(`logger on mode "${tm}"`, () => {
     stub.log.setMode(tm);
     ['debug', 'default', 'info', 'success', 'mock', 'warn', 'error']
-    .forEach(function(mode) {
-      stub.log[mode](`stubborn.log.${mode}`);
-    });
+      .forEach(function(mode) {
+        stub.log[mode](`stubborn.log.${mode}`);
+      });
   });
 }
 
@@ -117,7 +117,7 @@ test('wildcard paths', t => {
   return new Promise((resolve, reject) => {
     stub.start(Object.assign({}, defaultTestConfig, {
       fallbacks: [{
-        url: /api\/path\/([^\/]+)/,
+        url: /api\/path\/([^/]+)/,
         mock: 'api/path/__wildcard__/more/paths'
       }]
     }));
@@ -143,7 +143,7 @@ test('wildcard paths with string', t => {
   return new Promise((resolve, reject) => {
     stub.start(Object.assign({}, defaultTestConfig, {
       fallbacks: [{
-        url: 'api\/path\/([^\/]+)',
+        url: 'api/path/([^/]+)',
         mock: 'api/path/__wildcard__/more/paths'
       }]
     }));

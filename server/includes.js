@@ -1,5 +1,4 @@
 'use strict';
-const log = require('./logger');
 const Conf = require('./config');
 const path = require('path');
 
