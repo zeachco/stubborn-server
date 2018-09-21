@@ -19,7 +19,7 @@ module.exports = app => {
   app.use((req, res, next) => {
     let mocker = null;
     try {
-      mocker = pathResolver(req);
+      mocker = pathResolver(req, utils);
       try {
         MockBehaviours[typeof mocker](mocker, req, res);
         log.mock(`${req.method} ${req.url}`);

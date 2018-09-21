@@ -1,9 +1,10 @@
 'use strict';
 
+const log = require('./logger');
 const config = require('./config');
 const path = require('path');
 
-module.exports = function pathResolver(req) {
+module.exports = function pathResolver(req, utils) {
   let conf = config.get();
   let mock = null;
 
@@ -11,6 +12,27 @@ module.exports = function pathResolver(req) {
   const pathToMocks = conf.pathToMocks[0] === '/' ?
     conf.pathToMocks :
     path.join(process.cwd(), conf.pathToMocks);
+
+  const pluginResolved = conf.plugins
+    .filter(plugin => plugin.hasOwnProperty('loader'))
+    .map(plugin => plugin.loader)
+    .reduce((res, loader) => {
+      if (res) return res;
+
+      try {
+        const customLoadedFile = loader(req, Object.assign({}, utils, {
+          pathToMocks: pathToMocks
+        }));
+
+        return customLoadedFile;
+      } catch (e) {
+        log.debug('Failed to load custom loader file');
+      }
+    }, undefined);
+
+  if (pluginResolved) {
+    return pluginResolved;
+  }
 
   let file = path.join(
     pathToMocks,

@@ -45,7 +45,11 @@ module.exports = {
     });
 
     config.includes = config.includes || [];
+    config.plugins = config.plugins || [];
     log.debug('Server configuration', config);
   },
-  get: () => config
+  get: () => config,
+  unset: (keys) => {
+    [].concat(keys).forEach(key => { delete config[key]; });
+  }
 };

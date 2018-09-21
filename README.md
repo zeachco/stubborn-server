@@ -103,7 +103,7 @@ Mocks can be specified in three ways:
 The way you choose depends on the needs of your project. You may also
 mix and match as the options are not exclusive.
 
-#### Attaching express handlers
+### Attaching express handlers
 
 When creating your mock server, a reference to the underlying raw express app
 is available. You can attach any response handlers you want:
@@ -126,7 +126,7 @@ stub.start();
 stub.stop();
 ```
 
-#### Including express handlers
+### Including express handlers
 
 Instead of manually attaching handlers to the app, you may specify paths to
 express handlers. The handlers will then be `require()`ed for you.
@@ -162,7 +162,7 @@ module.exports = (app, stub) => {
 };
 ```
 
-#### Configuration-driven
+### Configuration-driven
 
 By default, when the server recieves a request it will look into the directory
 specified by the `pathToMocks` configuration option for a mock response.
@@ -200,5 +200,28 @@ and a `post.json` mock that returns the same mock response data:
 {
   "hello": "world"
 }
-
 ```
+
+### Plugins
+
+A plugin architecture allows you to extend even more the custom functionality of your server.
+
+#### Custom loaders
+
+Add your own custom loader that takes precedence over the default behavior of file system lookup and the `fallbacks` property - this way even if your loader throws you can still rely on the standard functionality.
+
+Here is an example of a custom loader that uses sent data in order to load a mock:
+
+```js
+stub.start({
+  plugins: [
+    {
+      loader: (req, { pathToMocks }) => {
+        return require(path.join(pathToMocks, req.body.data);
+      }
+    }
+  ]
+});
+```
+
+> NOTE: you may also define multiple loaders, allowing you to have multiple custom fallbacks systems.
