@@ -186,6 +186,63 @@ test('custom variable passed trough configuration', t => {
   });
 });
 
+test('custom path resolver', t => {
+  let target = 'http://127.0.0.1:' + defaultTestConfig.servePort + '/custom-path-resolver';
+
+  return new Promise((resolve, reject) => {
+    stub.start(Object.assign({}, defaultTestConfig, {
+      plugins: [
+        {
+          loader: () => ({ a: 'a' })
+        }
+      ]
+    }));
+    request(target, function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        let data = JSON.parse(body);
+        t.truthy(data);
+        t.deepEqual(data, { a: 'a' });
+        resolve();
+      } else {
+        reject(error || response.statusCode + ' ' + response.body);
+      }
+      stub.stop();
+      const config = require('./server/config');
+      config.unset('plugins');
+    });
+  });
+});
+
+test('multiple custom path resolver', t => {
+  let target = 'http://127.0.0.1:' + defaultTestConfig.servePort + '/custom-path-resolver';
+
+  return new Promise((resolve, reject) => {
+    stub.start(Object.assign({}, defaultTestConfig, {
+      plugins: [
+        {
+          loader: () => { throw 'failed'; },
+        },
+        {
+          loader: () => ({ b: 'b' })
+        }
+      ]
+    }));
+    request(target, function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        let data = JSON.parse(body);
+        t.truthy(data);
+        t.deepEqual(data, { b: 'b' });
+        resolve();
+      } else {
+        reject(error || response.statusCode + ' ' + response.body);
+      }
+      stub.stop();
+      const config = require('./server/config');
+      config.unset('plugins');
+    });
+  });
+});
+
 require('./tests/config-app')({
   stub,
   fileConfig,
