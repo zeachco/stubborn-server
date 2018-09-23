@@ -75,7 +75,8 @@ Then write your initiator like the one given in `demo.js` or in `tests/...`
 Might look like this :
 
 ```javascript
-const stub = require('stubborn-server');
+const stubbornServer = require('stubborn-server');
+const stub = stubbornServer();
 
 stub.start(/* config to extend ./stubborn.js if required */);
 
@@ -109,7 +110,8 @@ When creating your mock server, a reference to the underlying raw express app
 is available. You can attach any response handlers you want:
 
 ```javascript
-const stub = require('stubborn-server');
+const stubbornServer = require('stubborn-server');
+const stub = stubbornServer();
 
 // Attaching express handlers directly via `app` raw reference.
 stub.app.use('/my/url/path', (req, res) => {
@@ -136,7 +138,8 @@ This example is functionally equivalent to the example above:
 `main.js`:
 
 ```javascript
-const stub = require('stubborn-server');
+const stubbornServer = require('stubborn-server');
+const stub = stubbornServer();
 
 stub.config.set({
   includes: ['path/to/handler.js'],
@@ -155,7 +158,7 @@ module.exports = (app, stub) => {
     // req / res are from express
     console.log(req.method);
     const response = {'hello': 'world'};
-    // stub is stubborn server object
+    // stub is stubborn server instance
     console.log(stub.config.get());
     res.json(response);
   });
@@ -213,6 +216,9 @@ Add your own custom loader that takes precedence over the default behavior of fi
 Here is an example of a custom loader that uses sent data in order to load a mock:
 
 ```js
+const stubbornServer = require('stubborn-server');
+const stub = stubbornServer();
+
 stub.start({
   plugins: [
     {

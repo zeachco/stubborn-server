@@ -1,25 +1,19 @@
 'use strict';
-const log = require('./logger');
-const memoryDb = require('./memory-db');
-const config = require('./config');
+
 const pathResolver = require('./path-resolver');
 
-const utils = {
-  config: config,
-  log: log.mock,
-  db: memoryDb
-};
+module.exports = stub => {
+  const { app, log } = stub;
 
-const MockBehaviours = {
-  'function': (mocker, req, res) => mocker(req, res, utils, mocker),
-  'object': (data, req, res) => res.json(data),
-  'null': (data, req, res) => res.end()
-};
-module.exports = app => {
+  const MockBehaviours = {
+    'function': (mocker, req, res) => mocker(req, res, stub, mocker),
+    'object': (data, req, res) => res.json(data),
+    'null': (data, req, res) => res.end()
+  };
   app.use((req, res, next) => {
     let mocker = null;
     try {
-      mocker = pathResolver(req, utils);
+      mocker = pathResolver(req, stub);
       try {
         MockBehaviours[typeof mocker](mocker, req, res);
         log.mock(`${req.method} ${req.url}`);

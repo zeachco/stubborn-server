@@ -1,12 +1,10 @@
 'use strict';
-const Conf = require('./config');
 const path = require('path');
 
-module.exports = app => {
-  const conf = Conf.get();
+module.exports = (stub) => {
+  const { app, config } = stub;
+  const conf = config.get();
   conf.includes.forEach(include => {
-    // const file = path.join(conf.pathToMocks, include);
-
     const pathToMocks = conf.pathToMocks[0] === '/' ?
       conf.pathToMocks :
       path.join(process.cwd(), conf.pathToMocks);
@@ -15,6 +13,6 @@ module.exports = app => {
       pathToMocks,
       include
     );
-    require(file)(app, require('..'));
+    require(file)(app, stub);
   });
 };
