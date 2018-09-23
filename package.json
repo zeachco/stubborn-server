@@ -21,7 +21,7 @@
     "test"
   ],
   "author": "Olivier Rousseau-Guyot",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/zeachco/stubborn/issues"
   },

@@ -1,20 +1,22 @@
-# Is your backend stubborn?
+# stubborn-server
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/zeachco/stubborn-server.svg)](https://greenkeeper.io/)
-
-## Supports v4.x.x to latest [![Build Status](https://travis-ci.org/zeachco/stubborn-server.png)](https://travis-ci.org/zeachco/stubborn-server)
+[![Build Status](https://travis-ci.org/zeachco/stubborn-server.svg)](https://travis-ci.org/zeachco/stubborn-server)
+[![License](https://img.shields.io/badge/license-GPL%203.0-blue.svg?style=flat)](https://raw.githubusercontent.com/zeachco/stubborn-server/master/LICENSE)
 
 NodeJS Stub server for test and dev purposes
 
-It allows:
+> Is your backend stubborn?
 
-- mocking with static json
-- mocking with dynamic request handlers based on [Express requests](http://expressjs.com/en/4x/api.html#req)
-- storing/accessing a memory database
-- separate database per namespace
-- reset a db at anytime with default values
-- usage of aliases to get alternate mock responses (allow scenarios flexibility)
-- integrates well with test framework
+## Features
+
+- Mocking with static json
+- Mocking with dynamic request handlers based on [Express requests](http://expressjs.com/en/4x/api.html#req)
+- Storing/accessing a memory database
+- Separate database per namespace
+- Reset a db at anytime with default values
+- Usage of aliases to get alternate mock responses (allow scenarios flexibility)
+- Integrates well with any test framework
 
 ## Just show me code!
 
@@ -202,11 +204,11 @@ and a `post.json` mock that returns the same mock response data:
 }
 ```
 
-### Plugins
+## Plugins
 
 A plugin architecture allows you to extend even more the custom functionality of your server.
 
-#### Custom loaders
+### Custom loaders
 
 Add your own custom loader that takes precedence over the default behavior of file system lookup and the `fallbacks` property - this way even if your loader throws you can still rely on the standard functionality.
 
@@ -225,3 +227,7 @@ stub.start({
 ```
 
 > NOTE: you may also define multiple loaders, allowing you to have multiple custom fallbacks systems.
+
+## License
+
+[GPL-3.0](LICENSE) © 2018 Olivier Rousseau-Guyot
