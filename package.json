@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "NodeJS Stub server for test and dev purposes",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "server"
+  ],
   "scripts": {
     "preversion": "npm test",
     "start": "node index.js",
