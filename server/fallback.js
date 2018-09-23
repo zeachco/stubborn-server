@@ -2,10 +2,10 @@
 
 const proxy = require('express-http-proxy');
 const express = require('express');
-const config = require('./config').get();
 
-module.exports = app => {
-  config.fallbacks.forEach(item => {
+module.exports = stub => {
+  const { app, config } = stub;
+  config.get().fallbacks.forEach(item => {
     if (item.target) {
       app.use(item.url, proxy(item.target, {
         proxyReqPathResolver: function(req) {

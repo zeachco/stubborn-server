@@ -1,37 +1,36 @@
 'use strict';
+
 const test = require('ava');
-const request = require('request');
+const got = require('got');
 
-module.exports = options => {
-  const defaultTestConfig = options.defaultTestConfig;
-  const stub = options.stub;
+const stub = require('../');
+const { getTestConf } = require('./helpers');
 
-  test('express extensions', t => {
-    let target = 'http://127.0.0.1:' + defaultTestConfig.servePort + '/user/abc123/images/def456/thumb';
-    return new Promise((resolve, reject) => {
-
-      stub.app.use('/user/:userId/images/:imageId/thumb', (req, res) => {
+test('express extensions', t => {
+  const s = stub();
+  return getTestConf()
+    .then(defaultTestConfig => {
+      s.app.use('/user/:userId/images/:imageId/thumb', (req, res) => {
         const response = Object.assign(
           { definedInCode: true },
           req.params,
-          stub.config.get()
+          s.config.get()
         );
         res.json(response);
       });
-      stub.start(defaultTestConfig);
-      request(target, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-          let data = JSON.parse(body);
-          t.truthy(data);
-          t.is(data.definedInCode, true);
-          t.is(data.userId, 'abc123');
-          t.is(data.imageId, 'def456');
-          resolve();
-        } else {
-          reject(error || response.statusCode + ' ' + response.body);
-        }
-        stub.stop();
-      });
+      s.start(defaultTestConfig);
+      return 'http://127.0.0.1:' + defaultTestConfig.servePort + '/user/abc123/images/def456/thumb';
+    })
+    .then(got)
+    .then(({ statusCode, body }) => {
+      if (statusCode !== 200) {
+        throw statusCode + ' ' + body;
+      }
+      let data = JSON.parse(body);
+      t.truthy(data);
+      t.is(data.definedInCode, true);
+      t.is(data.userId, 'abc123');
+      t.is(data.imageId, 'def456');
+      s.stop();
     });
-  });
-};
+});

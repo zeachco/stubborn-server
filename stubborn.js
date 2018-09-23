@@ -3,5 +3,5 @@ module.exports = {
   pathToMocks: 'demo/dynamic-mocks-examples',
   namespace: '',
   servePort: 8059,
-  fallbacks: {}
+  fallbacks: []
 };

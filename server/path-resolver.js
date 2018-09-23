@@ -1,10 +1,10 @@
 'use strict';
 
 const log = require('./logger');
-const config = require('./config');
 const path = require('path');
 
-module.exports = function pathResolver(req, utils) {
+module.exports = function pathResolver(req, stub) {
+  const { config } = stub;
   let conf = config.get();
   let mock = null;
 
@@ -20,7 +20,7 @@ module.exports = function pathResolver(req, utils) {
       if (res) return res;
 
       try {
-        const customLoadedFile = loader(req, Object.assign({}, utils, {
+        const customLoadedFile = loader(req, Object.assign({}, stub, {
           pathToMocks: pathToMocks
         }));
 

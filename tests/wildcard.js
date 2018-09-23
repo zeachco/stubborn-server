@@ -6,14 +6,17 @@ const got = require('got');
 const stub = require('../');
 const { getTestConf } = require('./helpers');
 
-test('express extensions with \'includes\' entries', t => {
+test('wildcard paths', t => {
   const s = stub();
   return getTestConf()
     .then(defaultTestConfig => {
       s.start(Object.assign({}, defaultTestConfig, {
-        includes: ['__custom/express_handlers']
+        fallbacks: [{
+          url: /api\/path\/([^/]+)/,
+          mock: 'api/path/__wildcard__/more/paths'
+        }]
       }));
-      return 'http://127.0.0.1:' + defaultTestConfig.servePort + '/user/abc123/images/def456/thumb';
+      return 'http://127.0.0.1:' + defaultTestConfig.servePort + '/api/path/abc123/more/paths';
     })
     .then(got)
     .then(({ statusCode, body }) => {
@@ -22,21 +25,23 @@ test('express extensions with \'includes\' entries', t => {
       }
       let data = JSON.parse(body);
       t.truthy(data);
-      t.is(data.userId, 'abc123');
-      t.is(data.imageId, 'def456');
+      t.is(data.type, 'dynamic-mock');
+      t.is(data.token, 'abc123');
       s.stop();
     });
 });
 
-test('express extensions with \'includes\' entries can access to config', t => {
+test('wildcard paths with string', t => {
   const s = stub();
   return getTestConf()
     .then(defaultTestConfig => {
       s.start(Object.assign({}, defaultTestConfig, {
-        includes: ['__custom/express_handlers'],
-        customPath: 'test'
+        fallbacks: [{
+          url: 'api/path/([^/]+)',
+          mock: 'api/path/__wildcard__/more/paths'
+        }]
       }));
-      return 'http://127.0.0.1:' + defaultTestConfig.servePort + '/user/abc123/images/def456/thumb';
+      return 'http://127.0.0.1:' + defaultTestConfig.servePort + '/api/path/abc123/more/paths';
     })
     .then(got)
     .then(({ statusCode, body }) => {
@@ -45,7 +50,8 @@ test('express extensions with \'includes\' entries can access to config', t => {
       }
       let data = JSON.parse(body);
       t.truthy(data);
-      t.is(data.customPath, 'test');
+      t.is(data.type, 'dynamic-mock');
+      t.is(data.token, 'abc123');
       s.stop();
     });
 });

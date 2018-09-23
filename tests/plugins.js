@@ -6,14 +6,18 @@ const got = require('got');
 const stub = require('../');
 const { getTestConf } = require('./helpers');
 
-test('express extensions with \'includes\' entries', t => {
+test('custom path resolver', t => {
   const s = stub();
   return getTestConf()
     .then(defaultTestConfig => {
       s.start(Object.assign({}, defaultTestConfig, {
-        includes: ['__custom/express_handlers']
+        plugins: [
+          {
+            loader: () => ({ a: 'a' })
+          }
+        ]
       }));
-      return 'http://127.0.0.1:' + defaultTestConfig.servePort + '/user/abc123/images/def456/thumb';
+      return 'http://127.0.0.1:' + defaultTestConfig.servePort + '/custom-path-resolver';
     })
     .then(got)
     .then(({ statusCode, body }) => {
@@ -22,21 +26,26 @@ test('express extensions with \'includes\' entries', t => {
       }
       let data = JSON.parse(body);
       t.truthy(data);
-      t.is(data.userId, 'abc123');
-      t.is(data.imageId, 'def456');
+      t.deepEqual(data, { a: 'a' });
       s.stop();
     });
 });
 
-test('express extensions with \'includes\' entries can access to config', t => {
+test('multiple custom path resolver', t => {
   const s = stub();
   return getTestConf()
     .then(defaultTestConfig => {
       s.start(Object.assign({}, defaultTestConfig, {
-        includes: ['__custom/express_handlers'],
-        customPath: 'test'
+        plugins: [
+          {
+            loader: () => { throw 'failed'; },
+          },
+          {
+            loader: () => ({ b: 'b' })
+          }
+        ]
       }));
-      return 'http://127.0.0.1:' + defaultTestConfig.servePort + '/user/abc123/images/def456/thumb';
+      return 'http://127.0.0.1:' + defaultTestConfig.servePort + '/multiple-custom-path-resolver';
     })
     .then(got)
     .then(({ statusCode, body }) => {
@@ -45,7 +54,8 @@ test('express extensions with \'includes\' entries can access to config', t => {
       }
       let data = JSON.parse(body);
       t.truthy(data);
-      t.is(data.customPath, 'test');
+      t.deepEqual(data, { b: 'b' });
       s.stop();
     });
 });
+

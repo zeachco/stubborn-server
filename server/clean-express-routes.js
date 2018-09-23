@@ -1,7 +1,6 @@
-module.exports = app => {
-  const routes = app._router.stack;
-
-  routes.forEach(removeMiddlewares);
+module.exports = stub => {
+  const { app } = stub;
+  const routes = app && app._router && app._router.stack;
 
   function removeMiddlewares(route, i, rts) {
     if (route.route) {
@@ -11,4 +10,6 @@ module.exports = app => {
       rts.splice(i, 1);
     }
   }
+
+  (routes || []).forEach(removeMiddlewares);
 };
