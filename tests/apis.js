@@ -3,7 +3,7 @@
 const test = require('ava');
 
 const stub = require('../');
-const { getTestConf } = require('./helpers');
+const { getTestConf } = require('../helpers');
 
 test('server exposed api', t => {
   const s = stub();

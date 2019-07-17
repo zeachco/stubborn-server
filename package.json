@@ -10,7 +10,7 @@
   "scripts": {
     "preversion": "npm test",
     "start": "node index.js",
-    "test": "ava -vs && eslint ./*.js server/*.js",
+    "test": "ava -vs tests/* && eslint ./*.js server/*.js",
     "test:watch": "ava -wvs"
   },
   "repository": {
@@ -38,9 +38,9 @@
     "express-http-proxy": "^1.4.0"
   },
   "devDependencies": {
-    "ava": "^0.25.0",
-    "eslint": "^5.6.0",
-    "get-port": "^4.0.0",
+    "ava": "^2.2.0",
+    "eslint": "^6.0.1",
+    "get-port": "^5.0.0",
     "got": "^9.2.2",
     "nodemon": "^1.19.1"
   }
