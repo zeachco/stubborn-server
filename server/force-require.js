@@ -14,7 +14,15 @@ const restoreRequire = () => {
   Module.prototype.require = originalRequire;
 };
 
+const wrapForceRequire = (fn, ...args) => {
+  forceRequire();
+  const result = fn(...args);
+  restoreRequire();
+  return result;
+};
+
 module.exports = {
   forceRequire,
-  restoreRequire
+  restoreRequire,
+  wrapForceRequire
 };
