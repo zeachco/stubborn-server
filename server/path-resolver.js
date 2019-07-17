@@ -2,7 +2,7 @@
 
 const log = require('./logger');
 const path = require('path');
-const { forceRequire, restoreRequire } = require('./force-require');
+const { wrapForceRequire } = require('./force-require');
 
 module.exports = function pathResolver(req, stub) {
   const { config } = stub;
@@ -41,26 +41,24 @@ module.exports = function pathResolver(req, stub) {
     req.method.toLowerCase() + (conf.namespace ? '-' + conf.namespace : '')
   );
 
-  forceRequire();
-
-  try {
-    mock = require(file);
-  } catch (e) {
-    const firstMatching = conf.fallbacks.filter(f => !!f.mock && f.url.test(req.url))[0];
-    if (firstMatching) {
-      file = path.join(
-        pathToMocks,
-        firstMatching.mock,
-        req.method.toLowerCase() + (conf.namespace ? '-' + conf.namespace : '')
-      );
+  wrapForceRequire(() => {
+    try {
       mock = require(file);
-      mock.matches = firstMatching.url.exec(req.url);
-    } else {
-      throw 'no';
+    } catch (e) {
+      const firstMatching = conf.fallbacks.filter(f => !!f.mock && f.url.test(req.url))[0];
+      if (firstMatching) {
+        file = path.join(
+          pathToMocks,
+          firstMatching.mock,
+          req.method.toLowerCase() + (conf.namespace ? '-' + conf.namespace : '')
+        );
+        mock = require(file);
+        mock.matches = firstMatching.url.exec(req.url);
+      } else {
+        throw 'no';
+      }
     }
-  }
-
-  restoreRequire();
+  });
 
   return mock;
 };

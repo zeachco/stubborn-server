@@ -1,12 +1,13 @@
 'use strict';
 
 const pathResolver = require('./path-resolver');
+const { wrapForceRequire } = require('./force-require');
 
 module.exports = stub => {
   const { app, log } = stub;
 
   const MockBehaviours = {
-    'function': (mocker, req, res) => mocker(req, res, stub, mocker),
+    'function': (mocker, req, res) => wrapForceRequire(() => mocker(req, res, stub, mocker)),
     'object': (data, req, res) => res.json(data),
     'null': (data, req, res) => res.end()
   };
