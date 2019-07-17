@@ -2,6 +2,7 @@
 
 const log = require('./logger');
 const path = require('path');
+const { forceRequire, restoreRequire } = require('./force-require');
 
 module.exports = function pathResolver(req, stub) {
   const { config } = stub;
@@ -40,9 +41,9 @@ module.exports = function pathResolver(req, stub) {
     req.method.toLowerCase() + (conf.namespace ? '-' + conf.namespace : '')
   );
 
+  forceRequire();
+
   try {
-    let resolved = require.resolve(file);
-    delete require.cache[resolved];
     mock = require(file);
   } catch (e) {
     const firstMatching = conf.fallbacks.filter(f => !!f.mock && f.url.test(req.url))[0];
@@ -58,5 +59,8 @@ module.exports = function pathResolver(req, stub) {
       throw 'no';
     }
   }
+
+  restoreRequire();
+
   return mock;
 };
