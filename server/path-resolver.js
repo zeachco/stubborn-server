@@ -15,7 +15,7 @@ module.exports = function pathResolver(req, stub) {
     path.join(process.cwd(), conf.pathToMocks);
 
   const pluginResolved = conf.plugins
-    .filter(plugin => plugin.hasOwnProperty('loader'))
+    .filter(plugin => Object.prototype.hasOwnProperty.call(plugin, 'loader'))
     .map(plugin => plugin.loader)
     .reduce((res, loader) => {
       if (res) return res;
