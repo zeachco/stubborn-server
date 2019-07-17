@@ -4,7 +4,7 @@ const test = require('ava');
 const got = require('got');
 
 const stub = require('../');
-const { getTestConf } = require('./helpers');
+const { getTestConf } = require('../helpers');
 
 test('custom variable passed through configuration', t => {
   const s = stub();

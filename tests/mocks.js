@@ -4,7 +4,7 @@ const test = require('ava');
 const got = require('got');
 
 const stub = require('../');
-const { getTestConf } = require('./helpers');
+const { getTestConf } = require('../helpers');
 
 test('mocks', t => {
   const s = stub();
