@@ -3,6 +3,9 @@
   "version": "1.0.5",
   "description": "NodeJS Stub server for test and dev purposes",
   "main": "index.js",
+  "engines": {
+    "node": ">=10"
+  },
   "files": [
     "index.js",
     "server"
@@ -31,17 +34,17 @@
   },
   "homepage": "https://github.com/zeachco/stubborn#readme",
   "dependencies": {
-    "body-parser": "^1.15.1",
-    "chalk": "^2.0.0",
-    "cookie-parser": "^1.4.3",
-    "express": "^4.13.4",
-    "express-http-proxy": "^1.4.0"
+    "body-parser": "^1.19.0",
+    "chalk": "^3.0.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "express-http-proxy": "^1.6.0"
   },
   "devDependencies": {
-    "ava": "^2.2.0",
-    "eslint": "^6.0.1",
-    "get-port": "^5.0.0",
-    "got": "^9.2.2",
-    "nodemon": "^1.19.1"
+    "ava": "^2.4.0",
+    "eslint": "^6.8.0",
+    "get-port": "^5.1.1",
+    "got": "^10.6.0",
+    "nodemon": "^1.19.4"
   }
 }
